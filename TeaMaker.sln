@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32113.165
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeaMaker", "TeaMaker\TeaMaker.csproj", "{095D4A24-E077-4BB1-9BFC-169019ACB522}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B6DE85F4-8194-4500-8C58-2AC94526EED2}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{095D4A24-E077-4BB1-9BFC-169019ACB522}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{095D4A24-E077-4BB1-9BFC-169019ACB522}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{095D4A24-E077-4BB1-9BFC-169019ACB522}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{095D4A24-E077-4BB1-9BFC-169019ACB522}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CDBC12D1-E982-4B97-9822-AFFAE1358697}
+	EndGlobalSection
+EndGlobal
