@@ -12,7 +12,7 @@ public class TeaMakerCore
         PrintTeaList();
     }
 
-    internal void BrewOneTea(string? selectedTea)
+    internal async void BrewOneTea(string? selectedTea)
     {
         int teanumber;
         var success = int.TryParse(selectedTea, out teanumber);
@@ -29,8 +29,10 @@ public class TeaMakerCore
 
         var teaVerification = new TeaVerification();
         var result = teaVerification.VerifyTea(TeaList[teanumber - 1], temperature, brewTime);
+        var resString = $"Twoja herbata jest {result}.";
+        Console.WriteLine(resString);
 
-        Console.WriteLine($"Twoja herbata jest {result}");
+        await File.AppendAllTextAsync("result-4.txt", $"Wybrałeś {TeaList[teanumber - 1].Name}, parzyłeś ją w temperaturze {temperature} stopni, przez {brewTime} sekund.\n{resString}.");
 
     }
     int TakeParametere(string paramName)
