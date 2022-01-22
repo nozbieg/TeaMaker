@@ -31,7 +31,7 @@ public class TeaMakerCore
         var teaVerification = new TeaVerification();
         resultList.Add(teaVerification.VerifyTea(teaParameters, TouragToMake));
         var touragResult = string.Empty;
-        if (resultList.ElementAt(0) == resultList.ElementAt(1) && resultList.ElementAt(1) == "idealny")
+        if (resultList.ElementAt(0) == resultList.ElementAt(1) && resultList.ElementAt(1) == "idealna")
         {
             touragResult = $"Chciałeś przygotowac Tourag na bazie {TouragToMake.TeaBase.Name} w temperaturze {TouragToMake.TeaBase.Temperature} stopni przez {TouragToMake.TeaBase.BrewTime} sekund\n" +
                 $"która wyszła {resultList.ElementAt(0)}, natomiast sam Tourag parzyłeś w temperaturze {TouragToMake.Temperature} stopni, przez {TouragToMake.BrewTime} sekund i jest on {resultList.ElementAt(1)}";
