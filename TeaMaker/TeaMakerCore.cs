@@ -5,6 +5,7 @@ public class TeaMakerCore
 {
     public IList<TeaParameter> TeaList { get; set; }
     public IList<TeaToBrew> TeaListToBrew { get; set; }
+    public TouragToMake TouragToMake { get; set; }
 
     public void DisplayMenu()
     {
@@ -15,6 +16,63 @@ public class TeaMakerCore
         Console.WriteLine("Zaparzymy herbaty z pliku input-file");
         //Console.WriteLine("Naciśnij enter");
         //Console.ReadLine();
+    }
+
+    public void BrewTourag()
+    {
+        var resultList = new List<string>();
+        resultList.Add(BrewOneTea(TouragToMake.TeaBase));
+
+        var teaParameters = TeaList.Where(x => x.Name == TouragToMake.Name).FirstOrDefault();
+        if (teaParameters == null)
+        {
+            throw new Exception("Herbata z pliku input-file nie znajduje sie w pliku tea-data");
+        }
+        var teaVerification = new TeaVerification();
+        resultList.Add(teaVerification.VerifyTea(teaParameters, TouragToMake));
+        var touragResult = string.Empty;
+        if (resultList.ElementAt(0) == resultList.ElementAt(1) && resultList.ElementAt(1) == "idealny")
+        {
+            touragResult = $"Chciałeś przygotowac Tourag na bazie {TouragToMake.TeaBase.Name} w temperaturze {TouragToMake.TeaBase.Temperature} stopni przez {TouragToMake.TeaBase.BrewTime} sekund\n" +
+                $"która wyszła {resultList.ElementAt(0)}, natomiast sam Tourag parzyłeś w temperaturze {TouragToMake.Temperature} stopni, przez {TouragToMake.BrewTime} sekund i jest on {resultList.ElementAt(1)}";
+        }
+        else
+        {
+            touragResult = $"Chciałeś przygotowac Tourag na bazie {TouragToMake.TeaBase.Name} w temperaturze {TouragToMake.TeaBase.Temperature} stopni przez {TouragToMake.TeaBase.BrewTime} sekund\n" +
+                $"która wyszła {resultList.ElementAt(0)}, natomiast sam Tourag parzyłeś w temperaturze {TouragToMake.Temperature} stopni, przez {TouragToMake.BrewTime} sekund i niestety Tourag jest okropny";
+        }
+
+        Console.WriteLine(touragResult);
+        File.WriteAllText("result-6.txt", touragResult);
+    }
+
+    public async Task<TouragToMake> ImportTouragToMake(string inputFile)
+    {
+
+        var lines = await File.ReadAllLinesAsync(inputFile);
+        var lineCounter = 0;
+        var tourag = new TouragToMake();
+        foreach (var line in lines)
+        {
+            if (!line.StartsWith('#') && line.Length > 0)
+            {
+                if (lineCounter % 2 == 0)
+                {
+
+                    tourag.TeaBase = new TeaToBrew(line.Split(','));
+                }
+                else
+                {
+                    var lineSplit = line.Split(',');
+                    tourag.Name = lineSplit[0];
+                    tourag.Fluid = lineSplit[1];
+                    tourag.Temperature = int.Parse(lineSplit[2]);
+                    tourag.BrewTime = int.Parse(lineSplit[3]);
+                }
+            }
+            lineCounter++;
+        }
+        return tourag;
     }
 
     public void BrewTeasFromFile()
@@ -63,7 +121,7 @@ public class TeaMakerCore
 
     }
 
-    public async void BrewOneTea(TeaToBrew selectedTea)
+    public string BrewOneTea(TeaToBrew selectedTea)
     {
         var teaParameters = TeaList.Where(x => x.Name == selectedTea.Name).FirstOrDefault();
         if (teaParameters == null)
@@ -75,7 +133,8 @@ public class TeaMakerCore
         var resString = $"Wybrałeś {selectedTea.Name}, parzyłeś ją w temperaturze {selectedTea.Temperature} stopni, przez {selectedTea.BrewTime} sekund.\nTwoja herbata jest{result}.\n\n";
         Console.WriteLine(resString);
 
-        await File.AppendAllTextAsync("result-5.txt", resString);
+
+        return result;
 
     }
     int TakeParametere(string paramName)

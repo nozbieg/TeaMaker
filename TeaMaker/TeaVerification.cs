@@ -60,4 +60,32 @@ class TeaVerification
             return "idealna";
         }
     }
+    public string VerifyTea(TeaParameter teaParameters, TouragToMake touragToMake)
+    {
+        var minTeaTemp = teaParameters.Temperature - teaParameters.Temperature * 0.1;
+        var maxTeaTemp = teaParameters.Temperature + teaParameters.Temperature * 0.1;
+        var minBrewTime = teaParameters.BrewTime - teaParameters.BrewTime * 0.1;
+        var maxBrewTime = teaParameters.BrewTime + teaParameters.BrewTime * 0.1;
+
+        var errorList = new List<string>();
+
+        if (touragToMake.Temperature < minTeaTemp || touragToMake.BrewTime < minBrewTime)
+        {
+            errorList.Add("słaba");
+        }
+
+        if (touragToMake.Temperature > maxTeaTemp || touragToMake.BrewTime > maxBrewTime)
+        {
+            errorList.Add("niesmaczna");
+        }
+
+        if (errorList.Count > 0)
+        {
+            return errorList.Last();
+        }
+        else
+        {
+            return "idealna";
+        }
+    }
 }
