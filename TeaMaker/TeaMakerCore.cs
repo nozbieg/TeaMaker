@@ -30,8 +30,8 @@ public class TeaMakerCore
         var teaVerification = new TeaVerification();
         var result = teaVerification.VerifyTea(TeaList[teanumber - 1], temperature, brewTime);
         var resString = $"Twoja herbata jest {result}.";
-        Console.WriteLine(resString);
 
+        Console.WriteLine($"Wybrałeś {TeaList[teanumber - 1].Name}, parzyłeś ją w temperaturze {temperature} stopni, przez {brewTime} sekund.\n{resString}.");
         await File.AppendAllTextAsync("result-4.txt", $"Wybrałeś {TeaList[teanumber - 1].Name}, parzyłeś ją w temperaturze {temperature} stopni, przez {brewTime} sekund.\n{resString}.");
 
     }
