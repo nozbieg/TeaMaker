@@ -2,10 +2,10 @@
 Console.WriteLine("TeaMaker App v.1");
 
 var teaMaker = new TeaMakerCore();
-
-teaMaker.TeaList = await teaMaker.ImportFileToMemory("tea-data.txt");
+teaMaker.TeaList = await teaMaker.ImportTeaParamsFileToMemory("tea-data.txt");
+teaMaker.TeaListToBrew = await teaMaker.ImportTeaToBrewFileToMemory("input-file.txt");
 
 teaMaker.DisplayMenu();
 
-teaMaker.BrewOneTea(Console.ReadLine());
+teaMaker.BrewTeasFromFile();
 //teaMaker.DisplayMenu();

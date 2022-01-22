@@ -16,4 +16,7 @@ public class TeaParameter
         BrewTime = int.Parse(importedLine[3]) * 60;
         SpecialThings = importedLine[4];
     }
+    public TeaParameter()
+    {
+    }
 }

@@ -4,15 +4,42 @@ using TeaMaker;
 public class TeaMakerCore
 {
     public IList<TeaParameter> TeaList { get; set; }
+    public IList<TeaToBrew> TeaListToBrew { get; set; }
 
     public void DisplayMenu()
     {
-        Console.WriteLine("Witaj w aplikacji TeaMaker! Zaparzmy herbatę!");
-        Console.WriteLine("Wybierz herbatę do zaparzenia:");
-        PrintTeaList();
+        ////Console.WriteLine("Witaj w aplikacji TeaMaker! Zaparzmy herbatę!");
+        ////Console.WriteLine("Wybierz herbatę do zaparzenia:");
+        //PrintTeaList();
+
+        Console.WriteLine("Zaparzymy herbaty z pliku input-file");
+        //Console.WriteLine("Naciśnij enter");
+        //Console.ReadLine();
     }
 
-    internal async void BrewOneTea(string? selectedTea)
+    public void BrewTeasFromFile()
+    {
+        foreach (var teaToBrew in TeaListToBrew)
+        {
+            BrewOneTea(teaToBrew);
+        }
+    }
+    public async Task<IList<TeaToBrew>> ImportTeaToBrewFileToMemory(string inputFile)
+    {
+        var tealist = new List<TeaToBrew>();
+        var lines = await File.ReadAllLinesAsync(inputFile);
+        foreach (var line in lines)
+        {
+            if (!line.StartsWith('#') && line.Length > 0)
+            {
+                tealist.Add(new TeaToBrew(line.Split(',')));
+            }
+
+        }
+        return tealist;
+    }
+
+    public async void BrewOneTea(string? selectedTea)
     {
         int teanumber;
         var success = int.TryParse(selectedTea, out teanumber);
@@ -33,6 +60,22 @@ public class TeaMakerCore
         Console.WriteLine(resString);
 
         await File.AppendAllTextAsync("result-4.txt", $"Wybrałeś {TeaList[teanumber - 1].Name}, parzyłeś ją w temperaturze {temperature} stopni, przez {brewTime} sekund.\n{resString}.");
+
+    }
+
+    public async void BrewOneTea(TeaToBrew selectedTea)
+    {
+        var teaParameters = TeaList.Where(x => x.Name == selectedTea.Name).FirstOrDefault();
+        if (teaParameters == null)
+        {
+            throw new Exception("Herbata z pliku input-file nie znajduje sie w pliku tea-data");
+        }
+        var teaVerification = new TeaVerification();
+        var result = teaVerification.VerifyTea(teaParameters, selectedTea);
+        var resString = $"Wybrałeś {selectedTea.Name}, parzyłeś ją w temperaturze {selectedTea.Temperature} stopni, przez {selectedTea.BrewTime} sekund.\nTwoja herbata jest{result}.\n\n";
+        Console.WriteLine(resString);
+
+        await File.AppendAllTextAsync("result-5.txt", resString);
 
     }
     int TakeParametere(string paramName)
@@ -57,7 +100,7 @@ public class TeaMakerCore
         }
     }
 
-    public async Task<IList<TeaParameter>> ImportFileToMemory(string fileName)
+    public async Task<List<TeaParameter>> ImportTeaParamsFileToMemory(string fileName)
     {
         var tealist = new List<TeaParameter>();
         var lines = await File.ReadAllLinesAsync(fileName);
@@ -69,6 +112,7 @@ public class TeaMakerCore
             }
 
         }
+
         return tealist;
     }
 }
